@@ -54,5 +54,21 @@ class DogBreedController extends Controller
                 'message' => $th->getMessage()
             ], 500);
         }
-    }    
+    }   
+    
+    public function destroy(Request $request, DogBreed $breed)
+    {
+        try {
+            $breed->delete();
+            return response()->json([
+                'status' => true,
+                'message' => 'Raza borrada correctamente',
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
+    }
 }

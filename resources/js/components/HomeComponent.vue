@@ -30,7 +30,7 @@
                                 <i class="fa-solid fa-arrow-down-wide-short" onclick="sort(this)" data-column="horario"
                                     data-order="desc"></i>
                             </th>
-                            <th>Creada
+                            <th>Fecha
                                 <i class="fa-solid fa-arrow-up-wide-short" onclick="sort(this)" data-column="created_at"
                                     data-order="asc"></i>
                                 <i class="fa-solid fa-arrow-down-wide-short" onclick="sort(this)"
@@ -38,22 +38,22 @@
                             </th>
                             <th>Acciones</th>
                         </tr>
-                        <template v-for="bred in breeds">
+                        <template v-for="breed in breeds">
                             <tr>
-                                <td>{{ bred.name }}</td>
-                                <td>{{ bred.name }}</td>
-                                <td>{{ bred.size }}</td>
-                                <td>{{ bred.hair_color }}</td>
-                                <td>{{ bred.created_at }}</td>
+                                <td>{{ breed.name }}</td>
+                                <td>{{ breed.name }}</td>
+                                <td>{{ breed.size }}</td>
+                                <td>{{ breed.hair_color }}</td>
+                                <td>{{ breed.created_at }}</td>
                                 <td><i class="fa-solid fa-ellipsis-vertical" data-bs-toggle="dropdown"
                                         aria-expanded="false"></i>
                                     <ul class="dropdown-menu dropdown-menu-start dropdown-menu-lg-start"
                                         aria-labelledby="dropdownMenuButton1">
-                                        <li><a class="dropdown-item" href="#" @click="getBreed(bred.id,'ver')"><i
+                                        <li><a class="dropdown-item" href="#" @click="getBreed(breed.id,'ver')"><i
                                                     class="fa-regular fa-file fa-lg"></i> Ver </a></li>
-                                        <li><a class="dropdown-item" href="#" @click="getBreed(bred.id,'editar')"><i
+                                        <li><a class="dropdown-item" href="#" @click="getBreed(breed.id,'editar')"><i
                                                     class="fa-regular fa-pen-to-square fa-lg"></i> Editar</a></li>
-                                        <li><a class="dropdown-item" href="#" @click="destroyBreed()"><i
+                                        <li><a class="dropdown-item" href="#" @click="destroyBreed(breed.id)"><i
                                                     class="fa-regular fa-trash-can fa-lg"></i> Borrar </a></li>
                                     </ul>
                                 </td>
@@ -107,7 +107,7 @@ export default {
         })
         },
         getBreed(id, action) {
-            this.isLoading = true,
+            this.isLoading = true;
                 axios.get(`/api/breeds/${id}`).then(res => {
                     this.breed = res.data;
                     this.action = action;
@@ -121,6 +121,13 @@ export default {
             $('#modal-breeds').modal('toggle');
             this.action = 'crear';
             this.breed = {}
+        },
+        destroyBreed(id){
+            this.isLoading = true;
+            axios.delete(`/api/breeds/${id}`).then(res => {
+                this.isLoading = false;
+                this.getBreeds();
+            })
         }
 
 
