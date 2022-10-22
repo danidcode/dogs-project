@@ -11,7 +11,7 @@
                 <!-- <div class="modal-breeds-content">
                 
             </div>     -->
-                <form id="breeds-form">
+                <form id="breeds-form" ref="breeds_form-form" @submit="submitBreeds">
                     <div class="form-row d-flex justify-content-around">
                         <div class="col-md-3 mb-3">
                             <label>Nombre</label>
@@ -56,7 +56,14 @@ export default {
   props:{
     breed: Object,
     action: String,
-  }
+  },
+  methods: {
+      submitBreeds(){
+         // Your form submission
+         console.log("hehh");
+         this.breed = {}
+      }
+    }
 };
 
 </script>

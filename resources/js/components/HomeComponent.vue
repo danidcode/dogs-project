@@ -1,5 +1,6 @@
 
 <template>
+
   <ModalComponent :breed="breed" :action="action" />
     <div class="content">
         <div class="content-wrap">
@@ -73,6 +74,12 @@
             </div>
         </div>
     </div>
+    <div id="spinner-loading" v-if="isLoading">
+  <div class="text-center loading">
+      <div class="spinner-border" role="status">
+      </div>
+  </div>
+</div>
 </template>
 
 <script>
@@ -85,7 +92,8 @@ export default {
         return {
             breeds: [],
             breed:{},
-            action: ''
+            action: '',
+            isLoading : false
         }
     },
     created() {
@@ -94,16 +102,23 @@ export default {
                 this.breeds.push(breed)
             });
         })
+       
     },
     methods: {
-        getBreed(id, action) {
+         getBreed(id, action) {
+            this.isLoading = true,
             axios.get(`/api/breeds/${id}`).then(res => {
                 this.breed = res.data;
                 this.action = action;
+                this.isLoading = false;
+                $('#modal-breeds').modal('toggle');
             })
-            $('#modal-breeds').modal('toggle');
+            
+            
         },
         createBreed(){
+            $('#modal-breeds').modal('toggle');
+            this.breed = {}
             
         }
 
