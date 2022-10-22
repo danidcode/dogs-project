@@ -1,7 +1,5 @@
 
 <template>
-
-  <ModalComponent :breed="breed" :action="action" />
     <div class="content">
         <div class="content-wrap">
             <div class="breeds-wrap">
@@ -74,52 +72,55 @@
             </div>
         </div>
     </div>
-    <div id="spinner-loading" v-if="isLoading">
-  <div class="text-center loading">
-      <div class="spinner-border" role="status">
-      </div>
-  </div>
-</div>
+    <ModalComponent :getBreeds="getBreeds" :breed="breed" :action="action" />
+    <SpinnerComponent v-if="isLoading"/>
 </template>
 
 <script>
-import ModalComponent from './ModalComponent.vue'
+import ModalComponent from './ModalComponent.vue';
+import SpinnerComponent from './SpinnerComponent.vue'
 export default {
     components: {
-        ModalComponent
+        ModalComponent,
+        SpinnerComponent
     },
     data() {
         return {
             breeds: [],
-            breed:{},
+            breed: {},
             action: '',
-            isLoading : false
+            isLoading: false
         }
     },
     created() {
-        axios.get('/api/breeds').then(res => {
+        this.getBreeds();
+
+    },
+    methods: {
+
+        getBreeds(){
+            axios.get('/api/breeds').then(res => {
+                this.breeds = [];
             res.data.forEach(breed => {
                 this.breeds.push(breed)
             });
         })
-       
-    },
-    methods: {
-         getBreed(id, action) {
-            this.isLoading = true,
-            axios.get(`/api/breeds/${id}`).then(res => {
-                this.breed = res.data;
-                this.action = action;
-                this.isLoading = false;
-                $('#modal-breeds').modal('toggle');
-            })
-            
-            
         },
-        createBreed(){
+        getBreed(id, action) {
+            this.isLoading = true,
+                axios.get(`/api/breeds/${id}`).then(res => {
+                    this.breed = res.data;
+                    this.action = action;
+                    this.isLoading = false;
+                    $('#modal-breeds').modal('toggle');
+                })
+
+
+        },
+        createBreed() {
             $('#modal-breeds').modal('toggle');
+            this.action = 'crear';
             this.breed = {}
-            
         }
 
 

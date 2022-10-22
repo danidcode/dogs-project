@@ -20,10 +20,14 @@ const app = createApp({
       // `event` is the native DOM event
       alert(event.target.tagName)
     }
+  },
+  created: function() {
+    this.isLoading = false;
   }
 
 });
 
 app.use(router);
+
 app.mount("#app");
 
