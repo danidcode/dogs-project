@@ -17,13 +17,14 @@ class DogBreedController extends Controller
     {
         return response()->json($breed);
     } 
-    public function update(DogBreed $breed, Request $request)
+    public function update(DogBreed $breed, DogBreedRequest $request)
     {
         try {
+
             $breedValidated = $request->validated();
-            $imagen = $breed->imagen;
-            $request->imagen == $breed->imagen ?? ($imagen = imageInStorage($request->imagen));
-            $breedValidated['image'] = $imagen;
+            // $imagen = $breed->imagen;
+            // $request->imagen == $breed->imagen ?? ($imagen = imageInStorage($request->imagen));
+            // $breedValidated['image'] = $imagen;
             $breed->update($breedValidated);
             return response()->json([
                 'status' => true,
