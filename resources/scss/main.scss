@@ -1,0 +1,40 @@
+
+
+@import "variables";
+@import "header/header";
+@import "tablas/index";
+@import "input-file";
+
+* {
+  font-family: $poppins;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  // min-height:100vh;
+  height: 100%;
+  width: 100%;
+  margin: 0 !important;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+img,
+svg {
+  vertical-align: middle;
+}
+
+.main {
+  height: 100%;
+}
+
+#app{
+  height: 100%;
+}
+
+::-webkit-scrollbar-thumb:horizontal{
+  display: none;
+}
