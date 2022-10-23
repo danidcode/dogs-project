@@ -33,6 +33,7 @@
                         <div class="form-row mt-3  d-flex justify-content-center">
                             <div class="col-6">
                                 <label>Imagen</label>
+                                <InputFile :file_name="file_name" />
                             </div>
                         </div>
                         <div class="form-row mt-4  d-flex justify-content-center">
@@ -49,12 +50,13 @@
             </div>
         </div>
     </div>
-    <SpinnerComponent v-if="isLoading" />
+    <SpinnerComponent v-if="isLoading"  />
 </template>
 
 
 <script>
 import SpinnerComponent from './SpinnerComponent.vue';
+import InputFile from './InputFile.vue';
 
 export default {
     data() {
@@ -62,18 +64,24 @@ export default {
             name: '',
             size: '',
             hair_color: '',
-            isLoading: false
+            isLoading: false,
+            file_name: 'breed'
         };
     },
     components: {
-        SpinnerComponent
-    },
+    SpinnerComponent,
+    InputFile
+},
     props: {
         breed: Object,
         action: String,
         getBreeds: {
             type: Function
         }
+    },
+    created() {
+        this.getBreeds();
+
     },
     methods: {
         submitBreed(id = null) {
@@ -99,11 +107,11 @@ export default {
                 this.isLoading = false;
                 this.getBreeds();
             })
-            }
             
-        },
+        }
 
     }
+}
 };
 
 </script>
