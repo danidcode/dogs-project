@@ -10,7 +10,7 @@ class DogBreedController extends Controller
 {
     public function index(Request $request)
     {
-        $dog_breeds = DogBreed::get();
+        $dog_breeds = DogBreed::paginate(5);
         return response()->json($dog_breeds);
     }
     public function show(DogBreed $breed)
@@ -22,9 +22,9 @@ class DogBreedController extends Controller
         try {
 
             $breedValidated = $request->validated();
-            // $imagen = $breed->imagen;
-            // $request->imagen == $breed->imagen ?? ($imagen = imageInStorage($request->imagen));
-            // $breedValidated['image'] = $imagen;
+            $image = $breed->image;
+            $request->image == $breed->imagen ?? ($image = imageInStorage($request->image));
+            $breedValidated['image'] = $image;
             $breed->update($breedValidated);
             return response()->json([
                 'status' => true,
@@ -42,8 +42,8 @@ class DogBreedController extends Controller
     {
         try {
             $breed = $request->validated();
-            // $imagen = imageInStorage($request->imagen);
-            // $breed['imagen'] = $imagen;
+            $image = imageInStorage($request->image);
+            $breed['image'] = $image;
             DogBreed::create($breed);
             return response()->json([
                 'status' => true,

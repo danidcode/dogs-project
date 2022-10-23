@@ -1,6 +1,6 @@
 <template>
     <div class="w-100 text-center input-file">
-        <img id="breed_display_uploaded" @click="fileTrigger" class="img-custom-file img-fluid cursor-pointer"
+        <img id="breed_display_uploaded" @click="fileTrigger" ref="image" class="img-custom-file img-fluid cursor-pointer"
             :src="this.imageUrl" style="max-height: 40rem; max-width: 40rem;">
         <br>
         <small id="breed-lbl-valid" class="w-100 text-danger d-none">La imagen es
@@ -54,6 +54,7 @@ export default {
                             var old_base64 = e.target.result;
                             ref.imageUrl = old_base64;
                             ref.imgBase64 = old_base64;
+                            ref.$emit('imageUpdate', ref.imgBase64)
                         }
                         reader.readAsDataURL(element.target.files[0]);
                         // $(`#${name}-lbl-valid`).addClass('d-none');

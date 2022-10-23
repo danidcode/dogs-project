@@ -65,8 +65,11 @@
                 </div>
                 <div class="breeds-pagination-wrap">
                     <ul class="pagination-list">
-                        <li><a href="#"><i class="fa-solid fa-chevron-left"></i></a></li>
-                        <li><a href="#"><i class="fa-solid fa-chevron-right"></i></a></li>
+                        <li><a href="#" @click="previousPage()"><i class="fa-solid fa-chevron-left"></i></a></li>
+                        <template v-for="page in pages">
+                            <li><a v-bind:class = "(this.current_page == page)&& 'page-active'" href="#" @click="setPage(page)">{{page}}</a></li>
+                        </template>
+                        <li><a href="#" @click="nextPage()"><i class="fa-solid fa-chevron-right"></i></a></li>
                     </ul>
                 </div>
             </div>
@@ -89,6 +92,8 @@ export default {
             breeds: [],
             breed: {},
             action: '',
+            pages:1,
+            current_page:1,
             isLoading: false
         }
     },
@@ -99,9 +104,14 @@ export default {
     methods: {
 
         getBreeds(){
-            axios.get('/api/breeds').then(res => {
+            axios.get(`/api/breeds?page=${this.current_page}`).then(res => {
+                const breeds_data = res.data.data;
+                const pagination_data = res.data;
+
                 this.breeds = [];
-            res.data.forEach(breed => {
+                this.current_page = pagination_data.current_page;
+                this.pages = pagination_data.last_page;
+                breeds_data.forEach(breed => {
                 this.breeds.push(breed)
             });
         })
@@ -128,6 +138,18 @@ export default {
                 this.isLoading = false;
                 this.getBreeds();
             })
+        },
+        setPage(page){
+            this.current_page = page;
+            this.getBreeds();
+        },
+        previousPage(){
+            this.current_page = this.current_page == 1 ? this.pages : this.current_page - 1;
+            this.getBreeds();
+        },
+        nextPage(){
+            this.current_page =  this.current_page == this.pages ? 1 : this.current_page + 1;;
+            this.getBreeds();
         }
 
 

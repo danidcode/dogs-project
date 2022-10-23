@@ -33,7 +33,7 @@
                         <div class="form-row mt-3  d-flex justify-content-center">
                             <div class="col-6">
                                 <label>Imagen</label>
-                                <InputFile :file_name="file_name" />
+                                <InputFile :file_name="file_name" @imageUpdate="imageUpdate" />
                             </div>
                         </div>
                         <div class="form-row mt-4  d-flex justify-content-center">
@@ -64,6 +64,7 @@ export default {
             name: '',
             size: '',
             hair_color: '',
+            image: '',
             isLoading: false,
             file_name: 'breed'
         };
@@ -95,6 +96,7 @@ export default {
                 name: this.name,
                 size: this.size,
                 hair_color: this.hair_color,
+                image: this.image,
 
             }
             if(id != null){
@@ -110,6 +112,9 @@ export default {
             
         }
 
+    },
+    imageUpdate(value){
+        this.image = value;
     }
 }
 };

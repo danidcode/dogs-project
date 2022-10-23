@@ -7,9 +7,7 @@ if (!function_exists('imageInStorage')) {
     function imageInStorage($data, $default = null)
     {
         $image_64 = $data;
-
         $extension = explode('/', explode(':', substr($image_64, 0, strpos($image_64, ';')))[1])[1];
-
         $replace = substr($image_64, 0, strpos($image_64, ',') + 1);
 
         $image = str_replace($replace, '', $image_64);
