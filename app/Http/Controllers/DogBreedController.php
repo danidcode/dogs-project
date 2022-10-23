@@ -10,7 +10,12 @@ class DogBreedController extends Controller
 {
     public function index(Request $request)
     {
-        $dog_breeds = DogBreed::paginate(5);
+        $column = $request->column;
+        $order = $request->order;
+        $dog_breeds = DogBreed::when(isset($order) && isset($column), function ($q) use ($column, $order) {
+            $q->orderBy($column, $order);
+        });
+        $dog_breeds = $dog_breeds->paginate(5);
         return response()->json($dog_breeds);
     }
     public function show(DogBreed $breed)

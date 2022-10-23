@@ -12,28 +12,28 @@
                             <th>Imagen
                             </th>
                             <th>Nombre
-                                <i class="fa-solid fa-arrow-up-wide-short" onclick="sort(this)" data-column="nombre"
+                                <i class="fa-solid fa-arrow-up-wide-short" @click="sort('name', 'asc')" data-column="nombre"
                                     data-order="asc"></i>
-                                <i class="fa-solid fa-arrow-down-wide-short" onclick="sort(this)" data-column="nombre"
+                                <i class="fa-solid fa-arrow-down-wide-short" @click="sort('name', 'desc')" data-column="nombre"
                                     data-order="desc"></i>
 
                             </th>
                             <th>Tamaño
-                                <i class="fa-solid fa-arrow-up-wide-short" @click="sort(this)"
+                                <i class="fa-solid fa-arrow-up-wide-short" @click="sort('size', 'asc')"
                                     data-column="limite_usuarios" data-order="asc"></i>
-                                <i class="fa-solid fa-arrow-down-wide-short" onclick="sort(this)"
+                                <i class="fa-solid fa-arrow-down-wide-short" @click="sort('size', 'desc')"
                                     data-column="limite_usuarios" data-order="desc"></i>
                             </th>
                             <th>Color de pelo
-                                <i class="fa-solid fa-arrow-up-wide-short" onclick="sort(this)" data-column="horario"
+                                <i class="fa-solid fa-arrow-up-wide-short" @click="sort('hair_color', 'asc')" data-column="horario"
                                     data-order="asc"></i>
-                                <i class="fa-solid fa-arrow-down-wide-short" onclick="sort(this)" data-column="horario"
+                                <i class="fa-solid fa-arrow-down-wide-short" @click="sort('hair_color', 'desc')" data-column="horario"
                                     data-order="desc"></i>
                             </th>
                             <th>Fecha
-                                <i class="fa-solid fa-arrow-up-wide-short" onclick="sort(this)" data-column="created_at"
+                                <i class="fa-solid fa-arrow-up-wide-short" @click="sort('created_at', 'asc')" data-column="created_at"
                                     data-order="asc"></i>
-                                <i class="fa-solid fa-arrow-down-wide-short" onclick="sort(this)"
+                                <i class="fa-solid fa-arrow-down-wide-short" @click="sort('created_at', 'desc')"
                                     data-column="created_at" data-order="desc"></i>
                             </th>
                             <th>Acciones</th>
@@ -67,9 +67,11 @@
                     <ul class="pagination-list">
                         <li><a href="#" @click="previousPage()"><i class="fa-solid fa-chevron-left"></i></a></li>
                         <template v-for="page in pages">
-                            <li><a v-bind:class = "(this.current_page == page)&& 'page-active'" href="#" @click="setPage(page)">{{page}}</a></li>
+                            <li v-if="page < 11 && this.current_page < 11"><a v-bind:class = "(this.current_page == page)&& 'page-active'" href="#" @click="setPage(page)">{{page}}</a></li>
                         </template>
                         <li><a href="#" @click="nextPage()"><i class="fa-solid fa-chevron-right"></i></a></li>
+
+                        
                     </ul>
                 </div>
             </div>
@@ -80,6 +82,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import ModalComponent from './ModalComponent.vue';
 import SpinnerComponent from './SpinnerComponent.vue'
 export default {
@@ -93,6 +96,7 @@ export default {
             breed: {},
             action: '',
             pages:1,
+            orders: null,
             current_page:1,
             isLoading: false
         }
@@ -104,7 +108,10 @@ export default {
     methods: {
 
         getBreeds(){
-            axios.get(`/api/breeds?page=${this.current_page}`).then(res => {
+            let url = `/api/breeds?page=${this.current_page}`;
+            this.orders != null ? url += `&column=${this.orders.column}&order=${this.orders.order}` : null
+                axios.get(url).then(res => {
+                    console.log(res);
                 const breeds_data = res.data.data;
                 const pagination_data = res.data;
 
@@ -115,6 +122,7 @@ export default {
                 this.breeds.push(breed)
             });
         })
+            
         },
         getBreed(id, action) {
             this.isLoading = true;
@@ -150,9 +158,46 @@ export default {
         nextPage(){
             this.current_page =  this.current_page == this.pages ? 1 : this.current_page + 1;;
             this.getBreeds();
+        },
+        sort(column, order){
+            const data = {
+                column: column,
+                order: order
+            }
+            this.orders = data;
+            this.getBreeds();
+
         }
 
 
     }
 }
 </script>
+
+<style>
+  .pagination-container {
+    display: flex;
+    column-gap: 10px;
+  }
+  .paginate-buttons {
+    height: 40px;
+    width: 40px;
+    border-radius: 20px;
+    cursor: pointer;
+    background-color: rgb(242, 242, 242);
+    border: 1px solid rgb(217, 217, 217);
+    color: black;
+  }
+  .paginate-buttons:hover {
+    background-color: #d8d8d8;
+  }
+  .active-page {
+    background-color: #3498db;
+    border: 1px solid #3498db;
+    color: white;
+  }
+  .active-page:hover {
+    background-color: #2988c8;
+  }
+</style>
+

@@ -8,6 +8,8 @@ import router from './router/index';
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css';
+import VueAwesomePaginate from "vue-awesome-paginate";
+import "vue-awesome-paginate/dist/style.css";
 const app = createApp({
   components: {
     Appcomponent,
@@ -28,6 +30,6 @@ const app = createApp({
 });
 
 app.use(router);
-
+app.use(VueAwesomePaginate);
 app.mount("#app");
 
