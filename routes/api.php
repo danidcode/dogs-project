@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DogBreedController;
+use App\Http\Controllers\DogController;
 use App\Models\DogBreed;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,5 +23,10 @@ use Illuminate\Support\Facades\Route;
 Route::resource(
     'breeds',
     DogBreedController::class,
+
+);
+Route::resource(
+    'dogs',
+    DogController::class,
 
 );

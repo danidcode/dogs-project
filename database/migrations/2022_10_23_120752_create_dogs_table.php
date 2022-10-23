@@ -13,13 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('dogs_breeds', function (Blueprint $table) {
+        Schema::create('dogs', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->string('name');
-            $table->string('origin');
+            $table->string('size');
             $table->longText('image');
-
+            $table->string('hair_color');
+            $table->unsignedBigInteger('breed_id');
+            $table->foreign('breed_id')->references('id')->on('dogs_breeds');
         });
     }
 
@@ -30,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('dogs_breeds');
+        Schema::dropIfExists('dogs');
     }
 };

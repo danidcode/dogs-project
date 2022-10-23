@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DogBreedRequest extends FormRequest
+class DogRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,9 @@ class DogBreedRequest extends FormRequest
     {
         return [
             'name' => 'required|max:20|string',
-            'origin' => 'required|max:20|string',
+            'hair_color' => 'required|max:20|string',
+            'breed_id' => 'required',
+            'size' => 'required',
             'image' => 'required',
         ];
     }

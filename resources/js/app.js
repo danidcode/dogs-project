@@ -2,18 +2,17 @@ import './bootstrap';
 
 import { createApp } from 'vue/dist/vue.esm-bundler';
 
-import Appcomponent from './components/AppComponent.vue'
-import HomeComponent from './components/HomeComponent.vue'
+import Appcomponent from './components/AppComponent.vue';
+import HomeComponent from './components/HomeComponent.vue';
+import BreedsComponent from './components/BreedsComponent.vue';
 import router from './router/index';
-import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css';
-import VueAwesomePaginate from "vue-awesome-paginate";
-import "vue-awesome-paginate/dist/style.css";
 const app = createApp({
   components: {
     Appcomponent,
-    HomeComponent
+    HomeComponent,
+    BreedsComponent
   },
   methods: {
     greet: function (event) {
@@ -30,6 +29,5 @@ const app = createApp({
 });
 
 app.use(router);
-app.use(VueAwesomePaginate);
 app.mount("#app");
 

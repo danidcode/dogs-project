@@ -5,7 +5,7 @@
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modal-breeds-titulo">Ver actividad</h5>
+                    <h5 class="modal-title" id="modal-breeds-titulo">Raza</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -13,32 +13,26 @@
                 
             </div>     -->
                     <form id="breeds-form" ref="breeds_form-form">
-                        <div class="form-row d-flex justify-content-around">
+                        <div class="form-row d-flex justify-content-around flex-wrap">
                             <div class="col-md-3 mb-3">
                                 <label>Nombre</label>
-                                <input type="text" ref="name" class="form-control" :value="breed.name"
-                                    id="actividad-nombre">
+                                <input type="text" ref="name" class="form-control" :value="breed.name">
                             </div>
                             <div class="col-md-3 mb-3">
-                                <label>Tamaño</label>
-                                <input type="text" ref="size" :value="breed.size" class="form-control"
-                                    id="actividad-limite">
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <label>Color del pelo </label>
-                                <input type="text" ref="hair_color" :value="breed.hair_color" class="form-control"
-                                    id="actividad-horario">
+                                <label>Origen</label>
+                                <input type="text" ref="origin" :value="breed.origin" class="form-control">
                             </div>
                         </div>
                         <div class="form-row mt-3  d-flex justify-content-center">
                             <div class="col-6">
                                 <label>Imagen</label>
-                                <InputFile :file_name="file_name" @imageUpdate="imageUpdate" />
+                                <InputFileBreed :file_name="file_name" :current_image="breed.image" @imageUpdate="imageUpdate" />
                             </div>
                         </div>
                         <div class="form-row mt-4  d-flex justify-content-center">
                             <input type="hidden" name="" id="record-id" data-id="0">
-                            <button v-if="action == 'editar'" type="button" class="btn-actualizar" @click.prevent="submitBreed(breed.id)"> Actualizar</button>
+                            <button v-if="action == 'editar'" type="button" class="btn-actualizar"
+                                @click.prevent="submitBreed(breed.id)"> Actualizar</button>
                             <button v-if="action == 'crear'" class="btn-crear" type="button"
                                 @click.prevent="submitBreed()"> Crear</button>
                         </div>
@@ -50,29 +44,29 @@
             </div>
         </div>
     </div>
-    <SpinnerComponent v-if="isLoading"  />
+    <SpinnerComponent v-if="isLoading" />
 </template>
 
 
 <script>
 import SpinnerComponent from './SpinnerComponent.vue';
-import InputFile from './InputFile.vue';
+import InputFileBreed from './InputFileBreed.vue';
 
 export default {
     data() {
         return {
             name: '',
-            size: '',
-            hair_color: '',
+            origin: '',
             image: '',
             isLoading: false,
-            file_name: 'breed'
+            file_name: 'breed',
+            current_image: null
         };
     },
     components: {
-    SpinnerComponent,
-    InputFile
-},
+        SpinnerComponent,
+        InputFileBreed
+    },
     props: {
         breed: Object,
         action: String,
@@ -89,34 +83,33 @@ export default {
             this.isLoading = true;
             // Your form submission
             this.name = this.$refs.name.value
-            this.size = this.$refs.size.value
-            this.hair_color = this.$refs.hair_color.value
+            this.origin = this.$refs.origin.value
 
             const data = {
                 name: this.name,
-                size: this.size,
-                hair_color: this.hair_color,
+                origin: this.origin,
                 image: this.image,
 
-            }
-            if(id != null){
-                axios.put(`/api/breeds/${id}`, data).then(res => {
-                this.isLoading = false;
-                this.getBreeds();
-            }) 
-            }else{
-                axios.post(`/api/breeds`, data).then(res => {
-                this.isLoading = false;
-                this.getBreeds();
-            })
-            
-        }
 
-    },
-    imageUpdate(value){
-        this.image = value;
+            }
+            if (id != null) {
+                axios.put(`/api/breeds/${id}`, data).then(res => {
+                    this.isLoading = false;
+                    this.getBreeds();
+                })
+            } else {
+                axios.post(`/api/breeds`, data).then(res => {
+                    this.isLoading = false;
+                    this.getBreeds();
+                })
+
+            }
+
+        },
+        imageUpdate(value) {
+            this.image = value;
+        }
     }
-}
 };
 
 </script>

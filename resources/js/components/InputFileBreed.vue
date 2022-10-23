@@ -1,7 +1,7 @@
 <template>
     <div class="w-100 text-center input-file">
         <img id="breed_display_uploaded" @click="fileTrigger" ref="image" class="img-custom-file img-fluid cursor-pointer"
-            :src="this.imageUrl" style="max-height: 40rem; max-width: 40rem;">
+            :src="this.current_image != null ? this.current_image : this.imageUrl" style="max-height: 40rem; max-width: 40rem;">
         <br>
         <small id="breed-lbl-valid" class="w-100 text-danger d-none">La imagen es
             requerida</small>
@@ -29,6 +29,7 @@ export default {
     },
     props: {
         file_name: String,
+        current_image: String,
     },
     mounted() {
     },

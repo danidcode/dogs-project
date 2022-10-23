@@ -2,39 +2,40 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\DogBreedRequest;
+use App\Http\Requests\DogRequest;
+use App\Models\Dog;
 use App\Models\DogBreed;
-use App\Models\Image;
 use Illuminate\Http\Request;
 
-class DogBreedController extends Controller
+class DogController extends Controller
 {
     public function index(Request $request)
     {
         $column = $request->column;
         $order = $request->order;
-        $dog_breeds = DogBreed::when(isset($order) && isset($column), function ($q) use ($column, $order) {
+        $dogs = Dog::when(isset($order) && isset($column), function ($q) use ($column, $order) {
             $q->orderBy($column, $order);
         });
-        $dog_breeds = $dog_breeds->paginate(5);
-        return response()->json($dog_breeds);
+        $dogs = $dogs->paginate(5);
+        $breeds = DogBreed::get();
+        return response()->json(['dogs' => $dogs, 'breeds' => $breeds]);
     }
-    public function show(DogBreed $breed)
+    public function show(Dog $dog)
     {
-        return response()->json($breed);
+        return response()->json($dog);
     } 
-    public function update(DogBreed $breed, DogBreedRequest $request)
+    public function update(Dog $dog, DogRequest $request)
     {
         try {
 
-            $breedValidated = $request->validated();
-            $image = $breed->image;
-            $request->image == $breed->imagen ?? ($image = imageInStorage($request->image));
-            $breedValidated['image'] = $image;
-            $breed->update($breedValidated);
+            $dogValidated = $request->validated();
+            $image = $dog->image;
+            $request->image == $dog->imagen ?? ($image = imageInStorage($request->image));
+            $dogValidated['image'] = $image;
+            $dog->update($dogValidated);
             return response()->json([
                 'status' => true,
-                'message' => 'Raza actualizada correctamente',
+                'message' => 'Perro actualizado correctamente',
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([
@@ -44,13 +45,13 @@ class DogBreedController extends Controller
         }
     } 
     
-    public function store(DogBreedRequest $request)
+    public function store(DogRequest $request)
     {
         try {
-            $breed = $request->validated();
+            $dog = $request->validated();
             $image = imageInStorage($request->image);
-            $breed['image'] = $image;
-            $dogBreedCreated = DogBreed::create($breed);
+            $dog['image'] = $image;
+            Dog::create($dog);
             return response()->json([
                 'status' => true,
                 'message' => 'Raza creada correctamente',
@@ -63,10 +64,10 @@ class DogBreedController extends Controller
         }
     }   
     
-    public function destroy(Request $request, DogBreed $breed)
+    public function destroy(Request $request, Dog $dog)
     {
         try {
-            $breed->delete();
+            $dog->delete();
             return response()->json([
                 'status' => true,
                 'message' => 'Raza borrada correctamente',
