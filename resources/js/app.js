@@ -14,14 +14,6 @@ const app = createApp({
     HomeComponent,
     BreedsComponent
   },
-  methods: {
-    greet: function (event) {
-      // `this` inside methods point to the Vue instance
-      alert('Hello ' + this.name + '!')
-      // `event` is the native DOM event
-      alert(event.target.tagName)
-    }
-  },
   created: function() {
     this.isLoading = false;
   }
